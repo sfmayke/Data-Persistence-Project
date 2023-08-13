@@ -1,21 +1,26 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using Unity.Services.Core;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
-using Unity.Services.CloudSave;
-using Unity.Services.Leaderboards;
-using Newtonsoft;
+using TMPro;
 
 public class MainMenu : MonoBehaviour
 {
-    public Dictionary<string, string> score;
+    public TMP_InputField nameInput;
+    public Text highestScoreText;
+
+    public void Start()
+    {
+        ScoreManager.Instance.LoadScoreData();
+        ScoreData highestScore = ScoreManager.Instance.HighestScore;
+        highestScoreText.text = $"Best Score : {highestScore.name} : {highestScore.score}";
+    }
 
     public void StartGame()
     {
+        ScoreManager.Instance.playerName = nameInput.text;
         SceneManager.LoadScene(1);
     }
 
@@ -26,5 +31,10 @@ public class MainMenu : MonoBehaviour
 #else
         Application.Quit();
 #endif
+    }
+
+    public void save()
+    {
+        ScoreManager.Instance.SaveScore();
     }
 }

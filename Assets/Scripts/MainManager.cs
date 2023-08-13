@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -19,7 +20,6 @@ public class MainManager : MonoBehaviour
     private bool m_GameOver = false;
 
     
-    // Start is called before the first frame update
     void Start()
     {
         const float step = 0.6f;
@@ -72,5 +72,10 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        ScoreManager.Instance.playerScore = m_Points;
+        ScoreManager.Instance.SaveScore();
+
+        HighestScoreText.text = $"Best Score : {ScoreManager.Instance.HighestScore.name} : {ScoreManager.Instance.HighestScore.score}";
     }
 }
